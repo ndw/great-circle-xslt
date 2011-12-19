@@ -1,0 +1,10 @@
+<configuration xmlns="http://saxon.sf.net/ns/configuration"
+               edition="EE">
+
+  <resources>
+    <extensionFunction>com.nwalsh.saxon.gcd.Distance</extensionFunction>
+    <extensionFunction>com.nwalsh.saxon.gcd.Direction</extensionFunction>
+    <extensionFunction>com.nwalsh.saxon.gcd.Bearing</extensionFunction>
+  </resources>
+
+</configuration>
