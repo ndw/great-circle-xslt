@@ -22,13 +22,12 @@ package com.nwalsh.saxon.gcd;
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
-import net.sf.saxon.om.SequenceIterator;
+import net.sf.saxon.om.Sequence;
 import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.tree.iter.SingletonIterator;
 import net.sf.saxon.value.DoubleValue;
 import net.sf.saxon.value.SequenceType;
-import com.nwalsh.saxon.gcd.GCD;
 
 public class Distance extends ExtensionFunctionDefinition {
     private static final StructuredQName qName =
@@ -65,19 +64,20 @@ public class Distance extends ExtensionFunctionDefinition {
     }
 
     private class FuncCall extends ExtensionFunctionCall {
-        public SequenceIterator call(SequenceIterator[] arguments, XPathContext context) throws XPathException {
+        @Override
+        public Sequence call(XPathContext xPathContext, Sequence[] sequences) throws XPathException {
             double lat1, long1, lat2, long2, radius;
 
             // My goodness this is hideously inefficient
-            lat1   = Double.parseDouble(arguments[0].next().getStringValue());
-            long1  = Double.parseDouble(arguments[1].next().getStringValue());
-            lat2   = Double.parseDouble(arguments[2].next().getStringValue());
-            long2  = Double.parseDouble(arguments[3].next().getStringValue());
-            radius = Double.parseDouble(arguments[4].next().getStringValue());
+            lat1   = Double.parseDouble(sequences[0].head().getStringValue());
+            long1  = Double.parseDouble(sequences[1].head().getStringValue());
+            lat2   = Double.parseDouble(sequences[2].head().getStringValue());
+            long2  = Double.parseDouble(sequences[3].head().getStringValue());
+            radius = Double.parseDouble(sequences[4].head().getStringValue());
 
             double dist = GCD.distance(lat1, long1, lat2, long2, radius);
 
-            return SingletonIterator.makeIterator(new DoubleValue(dist));
+            return new DoubleValue(dist);
         }
     }
 }

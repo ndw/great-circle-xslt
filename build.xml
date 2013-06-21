@@ -14,7 +14,7 @@
   <property name="gcd.jar.location" value="${build.dir}" />
   <property name="gcd.jar.name" value="gcd.jar" />
   <property name="gcd.jar" value="${gcd.jar.location}/${gcd.jar.name}" />
-  <property name="saxon.jar" value="/Volumes/Data/java/saxonee-9.3.0.5j/saxon9ee.jar"/>
+  <property name="saxon.jar" value="/projects/java/saxonee-9.5.1.1j/saxon9ee.jar"/>
 
   <path id="saxon.classpath">
     <pathelement location="${build.classes.dir}"/>

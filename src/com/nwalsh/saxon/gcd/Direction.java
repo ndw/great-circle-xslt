@@ -22,13 +22,12 @@ package com.nwalsh.saxon.gcd;
 import net.sf.saxon.expr.XPathContext;
 import net.sf.saxon.lib.ExtensionFunctionCall;
 import net.sf.saxon.lib.ExtensionFunctionDefinition;
-import net.sf.saxon.om.SequenceIterator;
+import net.sf.saxon.om.Sequence;
 import net.sf.saxon.om.StructuredQName;
 import net.sf.saxon.trans.XPathException;
 import net.sf.saxon.tree.iter.SingletonIterator;
 import net.sf.saxon.value.DoubleValue;
 import net.sf.saxon.value.SequenceType;
-import com.nwalsh.saxon.gcd.GCD;
 
 public class Direction extends ExtensionFunctionDefinition {
     private static final StructuredQName qName =
@@ -65,14 +64,14 @@ public class Direction extends ExtensionFunctionDefinition {
     }
 
     private class FuncCall extends ExtensionFunctionCall {
-        public SequenceIterator call(SequenceIterator[] arguments, XPathContext context) throws XPathException {
+        public Sequence call(XPathContext xPathContext, Sequence[] sequences) throws XPathException {
             double lat1, long1, lat2, long2;
 
             // My goodness this is hideously inefficient
-            lat1   = Double.parseDouble(arguments[0].next().getStringValue());
-            long1  = Double.parseDouble(arguments[1].next().getStringValue());
-            lat2   = Double.parseDouble(arguments[2].next().getStringValue());
-            long2  = Double.parseDouble(arguments[3].next().getStringValue());
+            lat1   = Double.parseDouble(sequences[0].head().getStringValue());
+            long1  = Double.parseDouble(sequences[1].head().getStringValue());
+            lat2   = Double.parseDouble(sequences[2].head().getStringValue());
+            long2  = Double.parseDouble(sequences[3].head().getStringValue());
             double dist = GCD.distance(lat1, long1, lat2, long2, 1.0);
 
             double lat1r = Math.toRadians(lat1);
@@ -100,7 +99,7 @@ public class Direction extends ExtensionFunctionDefinition {
                 direction = Math.toDegrees(a);
             }
 
-            return SingletonIterator.makeIterator(new DoubleValue(direction));
+            return new DoubleValue(direction);
         }
     }
 }
